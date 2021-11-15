@@ -14,7 +14,7 @@ const csrf = require('csurf');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
-const dbURL = 'mongodb+srv://justinConnolly:mongobongo@cluster0.dmf2p.mongodb.net/domoMaker';
+const dbURL = 'mongodb+srv://justinConnolly:mongobongo@cluster0.dmf2p.mongodb.net/domoMakerE';
 
 mongoose.connect(dbURL, (err) => {
   if (err) {

@@ -6,7 +6,7 @@ var handleDomo = function handleDomo(e) {
     width: 'hide'
   }, 350);
 
-  if ($("#domoName").val() == '' || $("#domoAge").val() == '') {
+  if ($("#domoName").val() == '' || $("#domoAge").val() == '' || $("#domoLevel").val() == '') {
     handleError("RAWR! All fields are required");
     return false;
   }
@@ -15,6 +15,15 @@ var handleDomo = function handleDomo(e) {
     loadDomosFromServer();
   });
   return false;
+};
+
+var handleDeleteClick = function handleDeleteClick(domo) {
+  var domoId = domo._id;
+
+  var _csrf = document.querySelector("#tokenInput");
+
+  var deleteData = "_csrf=".concat(_csrf.value, "&domoId=").concat(domoId);
+  sendAjax('DELETE', '/delete-domo', deleteData, loadDomosFromServer);
 };
 
 var DomoForm = function DomoForm(props) {
@@ -39,7 +48,15 @@ var DomoForm = function DomoForm(props) {
     type: "text",
     name: "age",
     placeholder: "Domo Age"
+  }), /*#__PURE__*/React.createElement("label", {
+    htmlFor: "level"
+  }, "Level: "), /*#__PURE__*/React.createElement("input", {
+    id: "domoLevel",
+    type: "text",
+    name: "level",
+    placeholder: "Domo Level"
   }), /*#__PURE__*/React.createElement("input", {
+    id: "tokenInput",
     type: "hidden",
     name: "_csrf",
     value: props.csrf
@@ -62,7 +79,10 @@ var DomoList = function DomoList(props) {
   var domoNodes = props.domos.map(function (domo) {
     return /*#__PURE__*/React.createElement("div", {
       key: domo._id,
-      className: "domo"
+      className: "domo",
+      onClick: function onClick() {
+        return handleDeleteClick(domo);
+      }
     }, /*#__PURE__*/React.createElement("img", {
       src: "/assets/img/domoface.jpeg",
       alt: "domo face",
@@ -71,7 +91,9 @@ var DomoList = function DomoList(props) {
       className: "domoName"
     }, " Name: ", domo.name, " "), /*#__PURE__*/React.createElement("h3", {
       className: "domoAge"
-    }, " Age: ", domo.age, " "));
+    }, " Age: ", domo.age, " "), /*#__PURE__*/React.createElement("h3", {
+      className: "domoLevel"
+    }, " Level: ", domo.level, " "));
   });
   return /*#__PURE__*/React.createElement("div", {
     className: "domoList"
